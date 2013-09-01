@@ -16,18 +16,26 @@
             myMap = new ymaps.Map ("map", {
                 center:     [69.642513,105.386271],
                 zoom: 3,
-                behaviors: ['drag', 'scrollZoom']
+                behaviors: ['drag', 'scrollZoom'],
+				type: null /* чтобы не загружался нижний слой 'схема' карт */
             });
 			/*myMap.behaviors.disable('drag');*/
 			/* Зарегистрирован обработчик события 'Регионы загружены' */
 			events = new ymaps.event.Manager();
 			events.add('regionLoaded', onRegionLoaded);
 
-            ymaps.regions.load('RU', {
+			// Добавим на карту слой OSM
+			myMap.layers.add(new ymaps.Layer(
+					'http://tile.openstreetmap.org/%z/%x/%y.png', {
+						projection: ymaps.projection.sphericalMercator
+					}));
+			myMap.copyrights.add('&copy; OpenStreetMap contributors, CC-BY-SA');
+
+ /*           ymaps.regions.load('RU', {
                 lang: 'ru',
                 quality: 0
             }).then(function (result) {
-				var regions = result.geoObjects; /*ссылка на коллекцию GeoObjectCollection*/
+				var regions = result.geoObjects; *//*ссылка на коллекцию GeoObjectCollection*//*
 				regions.events.add('mouseenter', function (e) {
 					var region = e.get('target');
 					console.log(region.options.get("fillColor"));
@@ -37,14 +45,14 @@
 					var region = e.get('target');
 					region.options.set({fillColor: "0066ff99"});
 				});
-				myMap.geoObjects.add(regions); /* Отобразили на акрте регионы */
+				myMap.geoObjects.add(regions); *//* Отобразили на акрте регионы *//*
 
 				events.fire('regionLoaded', {
 					regions: regions
 				});
             }, function () {
             	console.log('No response !!!!!!!!!!!!!!!!!!!!!!!!!!!');
-            });
+            });*/
 
         }
 
