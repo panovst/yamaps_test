@@ -4,9 +4,13 @@
     <title>Пример интеграции Яндекс карт</title>
     <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
     <script src="http://api-maps.yandex.ru/2.0.31/?lang=ru-RU&load=package.full,regions,geoObject.OverlayFactory,geometry.pixel.Polygon" type="text/javascript"></script>
+    <script src="js/mask-overlay.js" type="text/javascript"></script>
     <script type="text/javascript">
         ymaps.ready(init);
-        var myMap;
+        var myMap,
+		    events;
+
+
 
         function init(){
             myMap = new ymaps.Map ("map", {
@@ -15,22 +19,60 @@
                 behaviors: ['drag', 'scrollZoom']
             });
 
+			/* Зарегистрирован обработчик события 'Регионы загружены' */
+			events = new ymaps.event.Manager();
+			events.add('regionLoaded', onRegionLoaded);
+
             ymaps.regions.load('RU', {
                 lang: 'ru',
                 quality: 0
             }).then(function (result) {
-					var regions = result.geoObjects; // ссылка на коллекцию GeoObjectCollection
-					myMap.geoObjects.add(regions);
-						result.geoObjects.events.add('click', function (e) {
-							var region = e.get('target');
-							console.log(region.properties.get('name') + ' -> ' + region.properties.get('osmId'));
-						});
+				var regions = result.geoObjects; /*ссылка на коллекцию GeoObjectCollection*/
+				myMap.geoObjects.add(regions); /* Отобразили на акрте регионы */
 
+				events.fire('regionLoaded', {
+					regions: regions
+				});
             }, function () {
             	console.log('No response !!!!!!!!!!!!!!!!!!!!!!!!!!!');
             });
+
         }
-    </script>
+
+		/* callback для события 'Регионы загружены' */
+		function onRegionLoaded(data) {
+			renderMask(data);
+		}
+
+		/* Отрисовка тумана (т.е. оставить на карте только Россию) */
+		function renderMask(data) {
+			/* координаты отображаемого многоугольника на карте */
+			var coordinates = [];
+			data.get('regions')
+					.each(function (geoObject) {
+						coordinates.push.apply(coordinates, geoObject.geometry.getCoordinates());
+					});
+			var geometry = new ymaps.geometry.Polygon(coordinates, 'evenOdd',{
+				projection: myMap.options.get('projection')
+			});
+			geometry.setMap(myMap);
+
+			var overlay = new MaskOverlay(geometry.getPixelGeometry(), null, getDefaults());
+			overlay.setMap(myMap);
+			overlay.setGeometry(geometry);
+
+		}
+
+		function getDefaults () {
+			return {
+				zIndex: 1,
+				stroke: false,
+				strokeColor: false,
+				fillColor: 'FFF'
+			};
+		}
+
+	</script>
     <style type="text/css">
         #map {
             width: auto;
