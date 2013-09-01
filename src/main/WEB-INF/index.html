@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Пример интеграции Яндекс карт</title>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <script src="http://api-maps.yandex.ru/2.0.31/?lang=ru-RU&load=package.full,regions,geoObject.OverlayFactory,geometry.pixel.Polygon" type="text/javascript"></script>
+    <script type="text/javascript">
+        ymaps.ready(init);
+        var myMap;
+
+        function init(){
+            myMap = new ymaps.Map ("map", {
+                center:     [69.642513,105.386271],
+                zoom: 3,
+                behaviors: ['drag', 'scrollZoom']
+            });
+
+            ymaps.regions.load('RU', {
+                lang: 'ru',
+                quality: 0
+            }).then(function (result) {
+					var regions = result.geoObjects; // ссылка на коллекцию GeoObjectCollection
+					myMap.geoObjects.add(regions);
+						result.geoObjects.events.add('click', function (e) {
+							var region = e.get('target');
+							console.log(region.properties.get('name') + ' -> ' + region.properties.get('osmId'));
+						});
+
+            }, function () {
+            	console.log('No response !!!!!!!!!!!!!!!!!!!!!!!!!!!');
+            });
+        }
+    </script>
+    <style type="text/css">
+        #map {
+            width: auto;
+            height: 700px;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+</body>
+</html>
