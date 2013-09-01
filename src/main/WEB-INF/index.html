@@ -18,7 +18,7 @@
                 zoom: 3,
                 behaviors: ['drag', 'scrollZoom']
             });
-
+			/*myMap.behaviors.disable('drag');*/
 			/* Зарегистрирован обработчик события 'Регионы загружены' */
 			events = new ymaps.event.Manager();
 			events.add('regionLoaded', onRegionLoaded);
@@ -28,6 +28,15 @@
                 quality: 0
             }).then(function (result) {
 				var regions = result.geoObjects; /*ссылка на коллекцию GeoObjectCollection*/
+				regions.events.add('mouseenter', function (e) {
+					var region = e.get('target');
+					console.log(region.options.get("fillColor"));
+					region.options.set({fillColor: "FFCC99"});
+				});
+				regions.events.add('mouseleave', function (e) {
+					var region = e.get('target');
+					region.options.set({fillColor: "0066ff99"});
+				});
 				myMap.geoObjects.add(regions); /* Отобразили на акрте регионы */
 
 				events.fire('regionLoaded', {
