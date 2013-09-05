@@ -27,7 +27,7 @@
                 lang: 'ru',
                 quality: 0
             }).then(function (result) {
-				var regions = result.geoObjects; /*ссылка на коллекцию GeoObjectCollection*/
+				var regions = result.geoObjects;
 				regions.events.add('mouseenter', function (e) {
 					var region = e.get('target');
 					console.log(region.options.get("fillColor"));
@@ -37,7 +37,7 @@
 					var region = e.get('target');
 					region.options.set({fillColor: "0066ff99"});
 				});
-				myMap.geoObjects.add(regions); /* Отобразили на акрте регионы */
+				myMap.geoObjects.add(regions);
 
 				events.fire('regionLoaded', {
 					regions: regions
@@ -46,6 +46,36 @@
             	console.log('No response !!!!!!!!!!!!!!!!!!!!!!!!!!!');
             });
 
+			var myPlacemark = new ymaps.Placemark([65.811204, 128.995227], {
+				iconContent: '43'
+			}, {
+				// Options
+				// The placemark icon will stretch to fit the content
+				preset: 'twirl#blueStretchyIcon'
+			});
+/*
+					,myGeoObject = new ymaps.GeoObject({
+						// Geometry = object type + geographical coordinates of the object
+						geometry: {
+							// Geometry type - point
+							type: 'Point',
+							// Point coordinates.
+							coordinates: [37.967265, 32.798875]
+						},
+						// Properties
+						properties: {
+							// Placemark content.
+							iconContent: 'Placemark 2'
+						}
+					}, {
+						// Options
+						// The placemark icon will stretch to fit the content
+						preset: 'twirl#pinkStretchyIcon'
+					});
+*/
+
+			myMap.geoObjects
+					.add(myPlacemark);
         }
 
 		/* callback для события 'Регионы загружены' */
