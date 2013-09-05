@@ -5,20 +5,23 @@
     <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
     <script src="http://api-maps.yandex.ru/2.0.31/?lang=ru-RU&load=package.full,regions,geoObject.OverlayFactory,geometry.pixel.Polygon" type="text/javascript"></script>
     <script src="js/mask-overlay.js" type="text/javascript"></script>
+    <script src="js/gen_color.js" type="text/javascript"></script>
+    <script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         ymaps.ready(init);
         var myMap,
-		    events;
-
-
+		    events,
+			fillColor_inactive = "#FFFF4D",
+			fillColor_active = "FFCC99";
+		var colorGenerator = new ColorGenerator();
 
         function init(){
             myMap = new ymaps.Map ("map", {
                 center:     [69.642513,105.386271],
-                zoom: 3,
-                behaviors: ['drag', 'scrollZoom']
+                zoom: 3
+                /*behaviors: ['scrollZoom']*/
             });
-			/*myMap.behaviors.disable('drag');*/
+			myMap.behaviors.disable('drag');
 			/* Зарегистрирован обработчик события 'Регионы загружены' */
 			events = new ymaps.event.Manager();
 			events.add('regionLoaded', onRegionLoaded);
@@ -28,14 +31,18 @@
                 quality: 0
             }).then(function (result) {
 				var regions = result.geoObjects;
+				regions.each(function (reg) {
+					var color = colorGenerator.getColor();
+					reg.options.set({fillColor: color});
+					reg.options.set({xfillColor: color});
+				});
 				regions.events.add('mouseenter', function (e) {
 					var region = e.get('target');
-					console.log(region.options.get("fillColor"));
-					region.options.set({fillColor: "FFCC99"});
+					region.options.set({fillColor: fillColor_active});
 				});
 				regions.events.add('mouseleave', function (e) {
 					var region = e.get('target');
-					region.options.set({fillColor: "0066ff99"});
+					region.options.set({fillColor: region.options.get('xfillColor')});
 				});
 				myMap.geoObjects.add(regions);
 
@@ -76,6 +83,8 @@
 
 			myMap.geoObjects
 					.add(myPlacemark);
+
+
         }
 
 		/* callback для события 'Регионы загружены' */
