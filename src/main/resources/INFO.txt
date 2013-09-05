@@ -1,0 +1,52 @@
+
+                                 ******     Диапазон изменения масштаба карты   ******
+
+source: http://api.yandex.ru/maps/jsbox/hotspot_layer
+
+var myMap = new ymaps.Map('map', {
+            center: [55.709243, 37.500737],
+            zoom: 9
+        }, {
+            // В нашем примере хотспотные данные есть только для 9 и 10 масштаба.
+            // Поэтому ограничим диапазон коэффициентов масштабирования карты.
+            minZoom: 9,
+            maxZoom: 10
+        });
+
+								******    Пример со слоем активных областей   ******
+
+source: http://api.yandex.ru/maps/jsbox/hotspot_layer
+
+								******    Вывод списка объектов карты   ******
+
+source: http://api.yandex.ru/maps/jsbox/object_list
+
+
+
+								******    изменение масштаба колесом прокрутки будет происходить медленно,  ******
+source: http://api.yandex.ru/maps/jsbox/behaviors
+
+    // на 1/2 уровня масштабирования в секунду.
+    myMap.options.set('scrollZoomSpeed', 0.5);
+
+								******    behaviors    rightMouseButtonMagnifier   ******
+
+source: http://api.yandex.ru/maps/jsbox/behaviors
+//  - magnifier.rightButton - увеличение области, выделенной правой кнопкой мыши
+
+								******    Определение координат		******
+source: http://api.yandex.ru/maps/tools/getlonglat/
+
+
+								******    toolbar на карте (квадрат, типа вывод на консоль) ******
+source: http://api.yandex.ru/maps/jsbox/geoobject_events
+
+
+								******    Щелчок по карте - определение координат  ******
+source: http://api.yandex.ru/maps/jsbox/event_properties
+
+								******    Макет балуна кластера (при клике на метку можно отобразить кастомное содержимое балуна) ******
+source: http://api.yandex.ru/maps/jsbox/cluster_balloon_layout
+
+								***** поиск по объектам, добавленным на карту  ******
+source: http://api.yandex.ru/maps/jsbox/custom_search
