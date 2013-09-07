@@ -8,5 +8,11 @@
     <artifactId>yamaps</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    
+    <dependencies>
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.1-901.jdbc4</version>
+		</dependency>
+	</dependencies>
 </project>

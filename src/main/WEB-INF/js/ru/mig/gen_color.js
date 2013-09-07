@@ -17,7 +17,6 @@ var redPalette = ['FFE6E6', 'FFCCCC', 'FFB2B2', 'FF9999', 'FF8080', 'FF6666', 'F
 function ColorGenerator () {
 	this.activePalette = [].concat(greenPalette, yellowPalette, redPalette);
 	this.inactivePalette = [];
-	console.log(this.palette);
 
 	this.getColor = function() {
 		var index = Math.floor((Math.random()*this.activePalette.length)+0);
