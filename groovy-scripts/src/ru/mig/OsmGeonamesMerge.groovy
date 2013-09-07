@@ -1,9 +1,10 @@
 package ru.mig
 
 import groovy.json.JsonBuilder
+import ru.mig.geonames.DBGeonamesLoader
 
 class OsmGeonamesMerge {
-	def geos = [];
+	DBGeonamesLoader geonamesLoader
 	def matched = [];
 	def unmatched = [];
 	def extMatched = [
@@ -34,48 +35,66 @@ class OsmGeonamesMerge {
 			[osmId:253252, name:"Ингушетия", geonameId: 556349]
 	];
 
-	OsmGeonamesMerge(geos) {
-		this.geos = geos
+	OsmGeonamesMerge(geonamesLoader) {
+		this.geonamesLoader = geonamesLoader
 	}
 
 	void merge(yRegion) {
 		boolean found = false;
-		geos.each {it ->
+		geonamesLoader.getGeos().each {it ->
 			if (yRegion.name == it.name) {
-				matched.add([
-						osmId: yRegion.osmId,
-						geonameId: it.geonameId,
-						name: it.name,
-						population: it.population,
-						lat: it.lat,
-						lng: it.lng,
-						testStringRu: 'Привет',
-						testStringEn: 'Hello'
-				])
+				addToMatched(yRegion, it)
 				found = true
 			}
 		}
 		if (!found) {
-			println([osmId: yRegion.osmId, name: yRegion.name])
-			unmatched.add([
-					osmId: yRegion.osmId,
-					name: yRegion.name
-			])
+			doExtMatching(yRegion)
 		}
 	}
 
 	def getResult() {
+		Map<String, Object> result = new HashMap<>();
+		matched.each {it->
+			result.put(it.osmId, it)
+		}
 		return new JsonBuilder([
-				matchedTotal: matched.size(),
-				matched: matched,
-				unmatchedTotal: unmatched.size(),
-				unmatched: unmatched
+				total: matched.size(),
+				matched: result,
 		]).toPrettyString()
 
 	}
-}
 
-/*
-*
-*
-*/
+	private void doExtMatching(yRegion) {
+		boolean found = false
+		extMatched.each {it ->
+			if (yRegion.osmId.toInteger() == it.osmId) {
+				def geo = geonamesLoader.loadById(it.geonameId)
+				geo.name = yRegion.name
+				addToMatched(yRegion, geo)
+				found = true
+			}
+		}
+		if (!found) {
+			addToUnMatched(yRegion)
+		}
+	}
+
+	private void addToMatched(yRegion, geoname) {
+		matched.add([
+				osmId: yRegion.osmId,
+				geonameId: geoname.geonameId,
+				name: geoname.name,
+				population: geoname.population,
+				lat: geoname.lat,
+				lng: geoname.lng
+		])
+	}
+
+	private void addToUnMatched(yRegion) {
+		println([osmId: yRegion.osmId, name: yRegion.name])
+		unmatched.add([
+				osmId: yRegion.osmId,
+				name: yRegion.name
+		])
+	}
+}
