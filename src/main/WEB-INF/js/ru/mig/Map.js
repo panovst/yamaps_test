@@ -1,10 +1,11 @@
 /**
  * Класс для работы с API Яндекс карт
  */
-function Map() {
+function Map(options) {
 	var _map,
 		_this = this,
-		events = new ymaps.event.Manager();
+		events = new ymaps.event.Manager(),
+		mapOptions = options;
 
 	this.loadMap = function() {
 		_map = new ymaps.Map ("map", {
@@ -16,17 +17,13 @@ function Map() {
 		return _this;
 	};
 
-	this.loadRegions = function (options)  {
-		var _options = getDefaultRegionOptions();
-		if (options) {
-			_options = options;
-		}
+	this.loadRegions = function ()  {
 		events.add('regionLoaded', onRegionLoaded);
-		ymaps.regions.load(_options.country_iso2, {
-			lang: _options.lang,
-			quality: _options.quality
+		ymaps.regions.load(mapOptions.region_country_iso2, {
+			lang: mapOptions.region_country_lang,
+			quality: mapOptions.region_quality
 		}).then(function (result) {
-				attachRegionHandlers(result);
+				attachRegionHandlers(result, mapOptions);
 				events.fire('regionLoaded', {
 					regions: result.geoObjects
 				});
@@ -70,14 +67,6 @@ function getDefaultOptions() {
 	};
 }
 
-function getDefaultRegionOptions() {
-	return {
-		country_iso2: 'RU',
-		lang: 'ru',
-		quality: 0
-	};
-}
-
 function getDefaultRegionsMaskOverlayOptions() {
 	return {
 		zIndex: 1,
@@ -86,20 +75,13 @@ function getDefaultRegionsMaskOverlayOptions() {
 		fillColor: 'FFF'
 	};
 }
-function getDefaultRegionBehaviorOptions() {
-	return {
-		randomFillColor: true,
-		activeFillColor: true
-	};
-}
 
-function attachRegionHandlers(data) {
-	var options = getDefaultRegionBehaviorOptions(),
-		regions = data.geoObjects;
-	if (options.randomFillColor) {
+function attachRegionHandlers(data, options) {
+	var regions = data.geoObjects;
+	if (options.region_randomFillColor) {
 		setRandomColors(regions);
 	}
-	if (options.activeFillColor) {
+	if (options.region_hover) {
 		attachActiveInactiveBehavior(regions);
 	}
 }

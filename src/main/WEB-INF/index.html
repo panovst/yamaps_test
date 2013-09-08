@@ -14,9 +14,18 @@
         var myMap;
 
         function init(){
-            myMap = new Map().loadMap().loadRegions();
+            myMap = new Map(getMapOptions()).loadMap().loadRegions();
 		}
 
+		function getMapOptions() {
+			return {
+				region_country_iso2: 'RU',
+				region_country_lang: 'ru',
+				region_quality: 0,
+				region_randomFillColor: true,
+				region_hover: true
+			};
+		}
 	</script>
     <style type="text/css">
         #map {
