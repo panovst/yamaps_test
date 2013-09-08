@@ -37,6 +37,7 @@
 					reg.options.set({fillColor: color});
 					reg.options.set({xfillColor: color});
 
+/*
 					var geoname = osmGeonames.matched[reg.properties.get('osmId')];
 					if (geoname) {
 						var myPlacemark = new ymaps.Placemark([geoname.lat, geoname.lng], {
@@ -48,6 +49,7 @@
 						});
 						myMap.geoObjects.add(myPlacemark);
 					}
+*/
 
 				});
 				regions.events.add('mouseenter', function (e) {
@@ -66,29 +68,6 @@
             }, function () {
             	console.log('No response !!!!!!!!!!!!!!!!!!!!!!!!!!!');
             });
-
-/*
-					,myGeoObject = new ymaps.GeoObject({
-						// Geometry = object type + geographical coordinates of the object
-						geometry: {
-							// Geometry type - point
-							type: 'Point',
-							// Point coordinates.
-							coordinates: [37.967265, 32.798875]
-						},
-						// Properties
-						properties: {
-							// Placemark content.
-							iconContent: 'Placemark 2'
-						}
-					}, {
-						// Options
-						// The placemark icon will stretch to fit the content
-						preset: 'twirl#pinkStretchyIcon'
-					});
-*/
-
-
 
         }
 
