@@ -8,6 +8,38 @@
     <groupId>yamaps</groupId>
     <artifactId>yamaps</artifactId>
     <version>1.0-SNAPSHOT</version>
+	<properties>
+		<wro4j.version>1.7.0</wro4j.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>ro.isdc.wro4j</groupId>
+				<artifactId>wro4j-maven-plugin</artifactId>
+				<version>${wro4j.version}</version>
+<!--
+				<configuration>
+					<cssDestinationFolder>${project.build.directory}</cssDestinationFolder>
+				</configuration>
+-->
+
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>ro.isdc.wro4j</groupId>
+			<artifactId>wro4j-core</artifactId>
+			<version>${wro4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ro.isdc.wro4j</groupId>
+			<artifactId>wro4j-extensions</artifactId>
+			<version>${wro4j.version}</version>
+		</dependency>
+	</dependencies>
 
 	<profiles>
 		<profile>
