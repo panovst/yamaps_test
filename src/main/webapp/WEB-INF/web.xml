@@ -4,7 +4,7 @@
 
 <web-app>
 	<display-name>Yandex maps API integration</display-name>
-<!--	<filter>
+	<filter>
 		<filter-name>WebResourceOptimizer</filter-name>
 		<filter-class>
 			ro.isdc.wro.http.WroFilter
@@ -19,11 +19,11 @@
 		</init-param>
 		<init-param>
 			<param-name>cacheUpdatePeriod</param-name>
-			<param-value>60</param-value>
+			<param-value>6</param-value>
 		</init-param>
 		<init-param>
 			<param-name>modelUpdatePeriod</param-name>
-			<param-value>600</param-value>
+			<param-value>3</param-value>
 		</init-param>
 		<init-param>
 			<param-name>jmxEnabled</param-name>
@@ -45,5 +45,5 @@
 	<filter-mapping>
 		<filter-name>WebResourceOptimizer</filter-name>
 		<url-pattern>/static/*</url-pattern>
-	</filter-mapping>-->
+	</filter-mapping>
 </web-app>
