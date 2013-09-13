@@ -1,0 +1,39 @@
+INSTALL postgis 2.0
+
+sudo dpkg --purge postgis postgresql-9.1-postgis
+
+sudo apt-get install build-essential postgresql-server-dev-9.1 libxml2-dev libjson0-dev xsltproc docbook-xsl docbook-mathml gettext pgadmin3
+sudo apt-get install libproj-dev proj-bin
+
+download latest version postgis
+wget http://postgis.refractions.net/download/postgis-2.1.0.tar.gz
+tar xfvz postgis-2.1.0.tar.gz
+cd postgis-2.1.0
+./configure --with-gui
+make
+sudo make install
+sudo ldconfig
+sudo make comments-install
+
+sudo ln -sf /usr/share/postgresql-common/pg_wrapper /usr/local/bin/shp2pgsql
+sudo ln -sf /usr/share/postgresql-common/pg_wrapper /usr/local/bin/pgsql2shp
+sudo ln -sf /usr/share/postgresql-common/pg_wrapper /usr/local/bin/raster2pgsql
+
+/* Задать пароль для root-пользователя postgres  */
+sudo -s -u postgres
+psql
+\password postgres
+
+
+pg_hba.conf
+locate all all password
+sudo service postgresql restart
+
+sudo -u postgres createdb template_postgis
+sudo -u postgres psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-2.1/postgis.sql
+sudo -u postgres psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-2.1/spatial_ref_sys.sql
+sudo -u postgres psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-2.1/postgis_comments.sql
+sudo -u postgres psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-2.1/rtpostgis.sql
+sudo -u postgres psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-2.1/raster_comments.sql
+sudo -u postgres psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-2.1/topology.sql
+sudo -u postgres psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-2.1/topology_comments.sql

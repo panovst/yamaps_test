@@ -1,0 +1,26 @@
+createuser  osm  -P
+CREATE DATABASE osm WITH OWNER osm TEMPLATE template_postgis;
+
+SELECT postgis_full_version();
+
+
+INSTALL Osm2pgsql
+sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:kakrueger/openstreetmap
+sudo apt-get update
+sudo apt-get install osm2pgsql
+
+Схема базы http://wiki.openstreetmap.org/wiki/Osm2pgsql/schema
+
+
+default style
+Остался один важный штрих. Дело в том, что файл default.style, поставляемый osm2pgsql для экспорта osm данных в базу данных, по какой-то причине не соответствует последнему формату OSM
+wget https://github.com/openstreetmap/osm2pgsql/blob/v0.82.0/default.style
+cp /usr/share/osm2pgsql/default.style /usr/share/osm2pgsql/default.style.backup
+sudo cp "./default.style" "/usr/share/osm2pgsql/default.style"
+
+источник Osm файлов
+http://gis-lab.info/projects/osm_dump/
+
+новый аргумен '-l'  сохранять данные в градусах
+osm2pgsql -E4326 -l -rpbf -s -C2000 -Uosm -W -dosm RU-TUL.osm.pbf
