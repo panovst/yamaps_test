@@ -10,8 +10,8 @@ function Map(options) {
 	this.loadMap = function() {
 		_map = new ymaps.Map ("map", {
 			center:     getDefaultOptions().defaultCenter,
-			zoom: getDefaultOptions().defaultZoom
-			/*behaviors: ['scrollZoom']*/
+			zoom: getDefaultOptions().defaultZoom,
+			behaviors: ['drag', 'scrollZoom']
 		});
 
 		return _this;
@@ -31,6 +31,11 @@ function Map(options) {
 				console.log('No response !!!!!!!!!!!!!!!!!!!!!!!!!!!');
 			});
 		return _this;
+	};
+
+	this.addGeoObject = function (geo) {
+		_map.geoObjects.add(geo);
+//		_map.setBounds(geo.geometry.getBounds());
 	};
 
 	/* callback для события 'Регионы загружены' */

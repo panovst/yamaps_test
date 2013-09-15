@@ -37,3 +37,6 @@ sudo -u postgres psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/p
 sudo -u postgres psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-2.1/raster_comments.sql
 sudo -u postgres psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-2.1/topology.sql
 sudo -u postgres psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-2.1/topology_comments.sql
+
+
+Функции postgis: http://workshops.opengeo.org/postgis-intro/geometries_exercises.html

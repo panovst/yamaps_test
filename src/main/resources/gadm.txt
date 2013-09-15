@@ -1,0 +1,22 @@
+http://ru.wikipedia.org/wiki/%D0%AF%D0%BA%D1%83%D1%82%D0%B8%D1%8F
+Саха Якутия
+gid id_1 65
+
+http://workshops.opengeo.org/postgis-intro/geometries_exercises.html
+
+Команды
+ST_IsSimple
+ST_Simplify
+
+select * from RUS_ADM2 where id_1 = 65 and type_2 = 'Raion';
+select * from RUS_ADM2 where id_1 = 65 and type_2 = 'Raion' and ST_NumGeometries(geom) > 1;
+
+select * from RUS_ADM2 where gid = 1767;
+select ST_NumGeometries(geom) from RUS_ADM2 where gid = 1767;
+
+select ST_IsSimple(geom) from RUS_ADM2 where gid = 1766;
+select ST_NumGeometries(ST_Simplify(geom, 0.07)) from RUS_ADM2 where gid = 1766;
+
+select ST_GeometryType(st_geometryn(geom, 5)) from RUS_ADM2 where gid = 1766;
+select ST_AsGeoJSON(ST_FlipCoordinates(st_geometryn(geom, 1))) from RUS_ADM2 where gid = 1767;
+select ST_AsGeoJSON(ST_FlipCoordinates(ST_Simplify(geom, 0.07))) from RUS_ADM2 where gid = 1766;

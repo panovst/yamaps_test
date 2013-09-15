@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Пример интеграции Яндекс карт</title>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <script src="http://api-maps.yandex.ru/2.0.31/?lang=ru-RU&load=package.full,regions,geoObject.OverlayFactory,geometry.pixel.Polygon" type="text/javascript"></script>
+    <script src="../js/mask-overlay.js" type="text/javascript"></script>
+    <script src="../js/ru/mig/Map.js" type="text/javascript"></script>
+    <script src="../js/ru/mig/gen_color.js" type="text/javascript"></script>
+    <script src="../js/ru/mig/osm_geonames.js" type="text/javascript"></script>
+    <script src="../js/jquery-1.9.1.min.js" type="text/javascript"></script>
+	<script src="../js/ru/mig/gadm.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        ymaps.ready(init);
+        var myMap;
+
+        function init(){
+            myMap = new Map(getMapOptions()).loadMap();
+			addRegion(0, '#6699ff');
+			addRegion(1, '#6699ff');
+			addRegion(2, '#6699ff');
+			addRegion(3, '#6699ff');
+
+
+		}
+
+		function addRegion(number, color) {
+			var polygon = new ymaps.Polygon(Sakha[number].coordinates, {
+				hintContent: Sakha[number].name
+			}, {
+				fillColor: color
+			});
+			myMap.addGeoObject(polygon);
+		}
+
+		function getMapOptions() {
+			return {
+				region_country_iso2: 'RU',
+				region_country_lang: 'ru',
+				region_quality: 0,
+				region_randomFillColor: true,
+				region_hover: true
+			};
+		}
+	</script>
+    <style type="text/css">
+        #map {
+            width: auto;
+            height: 700px;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+</body>
+</html>
