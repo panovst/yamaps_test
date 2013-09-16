@@ -1,6 +1,7 @@
 package ru.mig.gadm
 
 import groovy.grape.Grape
+import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import groovy.sql.Sql
 
@@ -13,9 +14,16 @@ class GadmToJson {
 
 	def executeTestSql() {
 		def db = getConnection()
-		def rs = db.firstRow("select ST_AsGeoJSON(ST_FlipCoordinates(st_geometryn(geom, 1))) from RUS_ADM2 where gid = 1764");
-		def json = new JsonSlurper().parseText(rs.st_asgeojson)
-		println json.coordinates;
+		def rs = db.eachRow("select gid, nl_name_2 as name, ST_AsGeoJSON(ST_FlipCoordinates(st_geometryn(geom, 1)))  as coordinatesObj, name_2 as name_2 from (select * from RUS_ADM2 where id_1 = 65 and type_2 = 'Raion' and ST_NumGeometries(geom) = 1 and nl_name_2 is not null and nl_name_2 != '') as tmp;"){
+			geos.add([
+				gid: it.gid,
+				name: it.name,
+				name_2: it.name_2,
+				coordinates: new JsonSlurper().parseText(it.coordinatesObj).coordinates
+			]);
+		}
+		println geos.size();
+		println  new JsonBuilder(geos).toPrettyString();
 	}
 
 	def getConnection() {

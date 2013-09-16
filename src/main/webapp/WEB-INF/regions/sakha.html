@@ -16,17 +16,14 @@
 
         function init(){
             myMap = new Map(getMapOptions()).loadMap();
-			addRegion(0, '#6699ff');
-			addRegion(1, '#6699ff');
-			addRegion(2, '#6699ff');
-			addRegion(3, '#6699ff');
-
-
+			Sakha.forEach(function(region) {
+				addRegion(region, '#6699ff');
+			});
 		}
 
-		function addRegion(number, color) {
-			var polygon = new ymaps.Polygon(Sakha[number].coordinates, {
-				hintContent: Sakha[number].name
+		function addRegion(region, color) {
+			var polygon = new ymaps.Polygon(region.coordinates, {
+				hintContent: region.name
 			}, {
 				fillColor: color
 			});
