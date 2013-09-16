@@ -1,3 +1,9 @@
+createuser  gadm  -P
+CREATE DATABASE gadm WITH OWNER gadm TEMPLATE template_postgis;
+
+shp2pgsql  -s 4326 -W "latin1" RUS_adm0.shp  | psql -d gadm -U gadm
+
+
 http://ru.wikipedia.org/wiki/%D0%AF%D0%BA%D1%83%D1%82%D0%B8%D1%8F
 Саха Якутия
 gid id_1 65
@@ -20,3 +26,24 @@ select ST_NumGeometries(ST_Simplify(geom, 0.07)) from RUS_ADM2 where gid = 1766;
 select ST_GeometryType(st_geometryn(geom, 5)) from RUS_ADM2 where gid = 1766;
 select ST_AsGeoJSON(ST_FlipCoordinates(st_geometryn(geom, 1))) from RUS_ADM2 where gid = 1767;
 select ST_AsGeoJSON(ST_FlipCoordinates(ST_Simplify(geom, 0.07))) from RUS_ADM2 where gid = 1766;
+
+
+CREATE TABLE rus_adm3
+(
+    gid INT PRIMARY KEY NOT NULL,
+    id_0 INT,
+    iso VARCHAR(3),
+    name_0 VARCHAR(75),
+    id_1 INT,
+    name_1 VARCHAR(75),
+    id_2 INT,
+    name_2 VARCHAR(75),
+    id_3 INT,
+    name_3 VARCHAR(75),
+    nl_name_3 VARCHAR(75),
+    varname_3 VARCHAR(100),
+    type_3 VARCHAR(50),
+    engtype_3 VARCHAR(50),
+    geom geometry
+);
+

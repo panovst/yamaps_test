@@ -7,6 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.7.4" level="project" />
     <orderEntry type="library" name="groovy-2.1.7" level="application" />
   </component>
 </module>

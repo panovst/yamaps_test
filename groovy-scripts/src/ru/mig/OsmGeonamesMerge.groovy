@@ -53,7 +53,7 @@ class OsmGeonamesMerge {
 	}
 
 	def getResult() {
-		Map<String, Object> result = new HashMap<>();
+		Map<String, Object> result = new HashMap<String, Object>();
 		matched.each {it->
 			result.put(it.osmId, it)
 		}

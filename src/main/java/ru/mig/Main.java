@@ -70,6 +70,7 @@ public class Main {
 	}
 	private static void printValues(int lineNumber, String[] as) {
 		System.out.println("Line " + lineNumber + " has " + as.length + " values:");
+		System.out.println(as[0]);
 		unescapeUnicode(as[8]);
 	}
 }
