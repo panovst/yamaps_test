@@ -1,6 +1,7 @@
 package ru.mig
 
-import ru.mig.gadm.RussianNameUpdater
+import ru.mig.gadm.GadmToJson
 
-RussianNameUpdater updater = new RussianNameUpdater();
-updater.init();
+GadmToJson gadmConverter = new GadmToJson();
+gadmConverter.init();
+gadmConverter.executeTestSql();
