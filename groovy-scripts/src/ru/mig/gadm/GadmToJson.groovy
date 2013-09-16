@@ -14,16 +14,20 @@ class GadmToJson {
 
 	def executeTestSql() {
 		def db = getConnection()
-		def rs = db.eachRow("select gid, nl_name_2 as name, ST_AsGeoJSON(ST_FlipCoordinates(st_geometryn(geom, 1)))  as coordinatesObj, name_2 as name_2 from (select * from RUS_ADM2 where id_1 = 65 and type_2 = 'Raion' and ST_NumGeometries(geom) = 1 and nl_name_2 is not null and nl_name_2 != '') as tmp;"){
+		def rs = db.eachRow("select gid, nl_name_2 as name, ST_AsGeoJSON(ST_FlipCoordinates(st_geometryn(geom, 1)))  as coordinatesObj, name_2 as name_2 from (select * from RUS_ADM2 where id_1 = 65 and type_2 = 'Raion' and ST_NumGeometries(geom) = 1) as tmp;"){
+			def dataSource = SakhaRegions.exceptions[it.gid];
+			if (dataSource == null) {
+				dataSource = it;
+			}
 			geos.add([
-				gid: it.gid,
-				name: it.name,
-				name_2: it.name_2,
-				coordinates: new JsonSlurper().parseText(it.coordinatesObj).coordinates
+				gid: dataSource.gid,
+				name: dataSource.name,
+				name_2: dataSource.name_2,
+				coordinates: new JsonSlurper().parseText(dataSource.coordinatesObj).coordinates
 			]);
 		}
 		println geos.size();
-		println  new JsonBuilder(geos).toPrettyString();
+		println  new JsonBuilder(geos).toString()
 	}
 
 	def getConnection() {
