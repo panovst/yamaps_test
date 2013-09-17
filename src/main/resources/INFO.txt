@@ -1,4 +1,5 @@
-
+Стили меток
+http://api.yandex.ru/maps/doc/jsapi/2.x/ref/reference/option.presetStorage.xml
                                  ******     Диапазон изменения масштаба карты   ******
 
 source: http://api.yandex.ru/maps/jsbox/hotspot_layer

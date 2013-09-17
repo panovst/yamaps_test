@@ -19,6 +19,20 @@
 			Sakha.forEach(function(region) {
 				addRegion(region, '#6699ff');
 			});
+
+			var myPlacemark = new ymaps.Placemark([62.02939, 129.724408], {
+				// Чтобы балун и хинт открывались на метке, необходимо задать ей определенные свойства.
+				balloonContentHeader: "ГБУ РС (Я) «Поликлиника №1",
+				balloonContentBody: "Республика Саха, Россия",
+				balloonContentFooter: "677027, г. Якутск, ул. Кирова, 19",
+				hintContent: "Якутск"
+			},{
+				preset: "twirl#hospitalIcon"
+			});
+			console.log(myPlacemark);
+			myMap.addGeoObject(myPlacemark);
+			/*[129.704151,62.027833]  город Якутск*/
+			/*129.724408,62.02939 ГБУ РС (Я) «Поликлиника №1»*/
 		}
 
 		function addRegion(region, color) {
