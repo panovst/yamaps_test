@@ -14,6 +14,8 @@ http://workshops.opengeo.org/postgis-intro/geometries_exercises.html
 ST_IsSimple
 ST_Simplify
 
+select encode(st_asbinary(geom),'base64') from RUS_ADM2 where gid = 1764;
+
 select * from RUS_ADM2 where id_1 = 65 and type_2 = 'Raion';
 select * from RUS_ADM2 where id_1 = 65 and type_2 = 'Raion' and ST_NumGeometries(geom) > 1;
 

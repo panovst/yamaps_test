@@ -12,7 +12,14 @@ class GadmToJson {
 		loadDbDriver();
 	}
 
-	def executeTestSql() {
+	def executeSql() {
+		executeBase();
+		executeExceptions();
+		println geos.size();
+		println  new JsonBuilder(geos).toString()
+	}
+
+	private void executeBase() {
 		def db = getConnection()
 		def rs = db.eachRow("select gid, nl_name_2 as name, ST_AsGeoJSON(ST_FlipCoordinates(st_geometryn(geom, 1)))  as coordinatesObj, name_2 as name_2 from (select * from RUS_ADM2 where id_1 = 65 and type_2 = 'Raion' and ST_NumGeometries(geom) = 1) as tmp;"){
 			def dataSource = SakhaRegions.exceptions[it.gid];
@@ -20,14 +27,27 @@ class GadmToJson {
 				dataSource = it;
 			}
 			geos.add([
-				gid: dataSource.gid,
-				name: dataSource.name,
-				name_2: dataSource.name_2,
-				coordinates: new JsonSlurper().parseText(dataSource.coordinatesObj).coordinates
+					gid: dataSource.gid,
+					name: dataSource.name,
+					name_2: dataSource.name_2,
+					coordinates: new JsonSlurper().parseText(dataSource.coordinatesObj).coordinates
 			]);
 		}
-		println geos.size();
-		println  new JsonBuilder(geos).toString()
+	}
+
+	private void executeExceptions() {
+		def db = getConnection()
+		def rs = db.eachRow("select gid, nl_name_2 as name, ST_AsGeoJSON(ST_FlipCoordinates(st_geometryn(geom, 1)))  as coordinatesObj, name_2 as name_2 from (select * from RUS_ADM2 where id_1 = 65 and type_2 = 'Raion' and ST_NumGeometries(geom) > 1) as tmp;"){
+			def dataSource = SakhaRegions.exceptions[it.gid];
+			if (dataSource != null) {
+				geos.add([
+						gid: dataSource.gid,
+						name: dataSource.name,
+						name_2: dataSource.name_2,
+						coordinates: new JsonSlurper().parseText(dataSource.coordinatesObj).coordinates
+				]);
+			}
+		}
 	}
 
 	def getConnection() {
