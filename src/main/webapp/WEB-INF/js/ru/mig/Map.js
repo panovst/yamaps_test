@@ -41,11 +41,11 @@ function Map(options) {
 	/* callback для события 'Регионы загружены' */
 	var onRegionLoaded = function (data) {
 		_map.geoObjects.add(data.get('regions'));
-		renderMask(data.get('regions'));
+		_this.renderMask(data.get('regions'));
 	};
 
 	/* Отрисовка тумана (т.е. оставить на карте только Россию) */
-	var renderMask = function (regions) {
+	this.renderMask = function (regions) {
 		/* координаты отображаемого многоугольника на карте */
 		var coordinates = [];
 		regions.each(function (geoObject) {

@@ -12,13 +12,15 @@
 	<script src="../js/ru/mig/gadm.js" type="text/javascript"></script>
     <script type="text/javascript">
         ymaps.ready(init);
-        var myMap;
+        var myMap, regions = [];
 
         function init(){
             myMap = new Map(getMapOptions()).loadMap();
 			Sakha.forEach(function(region) {
 				addRegion(region, '#6699ff');
 			});
+
+//			myMap.renderMask($(regions));
 
 			var myPlacemark = new ymaps.Placemark([62.02939, 129.724408], {
 				// Чтобы балун и хинт открывались на метке, необходимо задать ей определенные свойства.
@@ -42,6 +44,7 @@
 				fillColor: color
 			});
 			myMap.addGeoObject(polygon);
+			regions.push(polygon);
 		}
 
 		function getMapOptions() {

@@ -21,7 +21,7 @@ class GadmToJson {
 
 	private void executeBase() {
 		def db = getConnection()
-		def rs = db.eachRow("select gid, nl_name_2 as name, ST_AsGeoJSON(ST_FlipCoordinates(st_geometryn(geom, 1)))  as coordinatesObj, name_2 as name_2 from (select * from RUS_ADM2 where id_1 = 65 and type_2 = 'Raion' and ST_NumGeometries(geom) = 1) as tmp;"){
+		def rs = db.eachRow("select gid, nl_name_2 as name, ST_AsGeoJSON(ST_FlipCoordinates(st_geometryn(geom, 1)))  as coordinatesObj, name_2 as name_2 from (select * from RUS_ADM2 where id_1 = 65 and type_2 in ('Raion', 'Gorsovet') and ST_NumGeometries(geom) = 1) as tmp;"){
 			def dataSource = SakhaRegions.exceptions[it.gid];
 			if (dataSource == null) {
 				dataSource = it;
