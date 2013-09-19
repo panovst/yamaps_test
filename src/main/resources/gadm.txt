@@ -11,6 +11,11 @@ gid id_1 65
 http://workshops.opengeo.org/postgis-intro/geometries_exercises.html
 
 Команды
+ST_Touches и ST_Intersection
+Определение координат общих границ геометрий
+select ST_AsGeoJSON(ST_LineMerge(coord)) from (
+select ST_FlipCoordinates(ST_Intersection(g1.geom, g2.geom)) coord from RUS_ADM2 g1 inner join RUS_ADM2 g2 on g1.gid = 1765 and g2.gid = 1781) as tmp;
+
 ST_IsSimple
 ST_Simplify
 
