@@ -35,7 +35,10 @@ function Map(options) {
 
 	this.addGeoObject = function (geo) {
 		_map.geoObjects.add(geo);
-//		_map.setBounds(geo.geometry.getBounds());
+	};
+
+	this.setBounds = function (bounds) {
+		_map.setBounds(bounds);
 	};
 
 	/* callback для события 'Регионы загружены' */

@@ -22,6 +22,7 @@
 				addRegion(region, '#6699ff');
 			});
 			myMap.addGeoObject(regions);
+			myMap.setBounds(regions.getBounds());
 			myMap.renderMask(regions);
 
 			var myPlacemark = new ymaps.Placemark([62.02939, 129.724408], {
