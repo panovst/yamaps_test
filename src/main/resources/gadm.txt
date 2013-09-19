@@ -11,7 +11,7 @@ gid id_1 65
 http://workshops.opengeo.org/postgis-intro/geometries_exercises.html
 
 Команды
-ST_Touches и ST_Intersection
+ST_Touches и ST_Intersection (http://publib.boulder.ibm.com/infocenter/db2luw/v8/index.jsp?topic=/com.ibm.db2.udb.doc/opt/csbp4182.htm)
 Определение координат общих границ геометрий
 select ST_AsGeoJSON(ST_LineMerge(coord)) from (
 select ST_FlipCoordinates(ST_Intersection(g1.geom, g2.geom)) coord from RUS_ADM2 g1 inner join RUS_ADM2 g2 on g1.gid = 1765 and g2.gid = 1781) as tmp;
