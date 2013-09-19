@@ -16,7 +16,8 @@ function Map(options) {
 			zoom: getDefaultOptions().defaultZoom,
 			behaviors: ['drag', 'scrollZoom']
 		});
-
+		// Отключаем перетаскивание карты мышью.
+//		_map.behaviors.disable('drag');
 		return _this;
 	};
 
