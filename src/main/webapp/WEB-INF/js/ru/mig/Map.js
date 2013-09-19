@@ -2,11 +2,14 @@
  * Класс для работы с API Яндекс карт
  */
 function Map(options) {
-	var _map,
+	var _map,         // ссылка на саму карту
 		_this = this,
-		events = new ymaps.event.Manager(),
-		mapOptions = options;
+		events = new ymaps.event.Manager(),  // событийный менеджер от яндекса
+		mapOptions = options;   // настройки карты
 
+	/**
+	 * Инициализация карты
+	 */
 	this.loadMap = function() {
 		_map = new ymaps.Map ("map", {
 			center:     getDefaultOptions().defaultCenter,
@@ -17,13 +20,17 @@ function Map(options) {
 		return _this;
 	};
 
+	/**
+	 * Загрузка регионов (@see сервис Яндекс-Регионы http://api.yandex.ru/maps/doc/jsapi/2.x/dg/concepts/regions.xml)
+	 *
+	 */
 	this.loadRegions = function ()  {
-		events.add('regionLoaded', onRegionLoaded);
+		events.add('regionLoaded', onRegionLoaded);  // регистрируем слушатель события когда все регионы загрузятся
 		ymaps.regions.load(mapOptions.region_country_iso2, {
 			lang: mapOptions.region_country_lang,
 			quality: mapOptions.region_quality
 		}).then(function (result) {
-				attachRegionHandlers(result, mapOptions);
+				attachRegionHandlers(result, mapOptions);  // подсветка hover, генерация цветов
 				events.fire('regionLoaded', {
 					regions: result.geoObjects
 				});
@@ -32,11 +39,19 @@ function Map(options) {
 			});
 		return _this;
 	};
-
+	/**
+	 *	Добавляет geo объект на карту
+	 *
+	 *  @param geo - точка "ymaps.Placemark", многоугольник "ymaps.Polygon",
+	 *  коллекция гео объектов "ymaps.GeoObjectCollection" etc.
+	 */
 	this.addGeoObject = function (geo) {
 		_map.geoObjects.add(geo);
 	};
-
+	/**
+	 * Центрирование карты на центре границ
+	 * @param bounds границы геометрии
+	 */
 	this.setBounds = function (bounds) {
 		_map.setBounds(bounds);
 	};
