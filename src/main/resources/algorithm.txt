@@ -1,0 +1,34 @@
+Сам алгоритм
+1. Выделить из мультиполигона состаляющие полигоны и записать в таблицу
+
+CREATE TABLE adm2_borders AS
+	SELECT gid, id_1, nl_name_2, name_2,
+		(ST_Dump(geom)).geom
+	FROM rus_adm2;
+2. создаем primary key для таблицы
+ALTER TABLE adm2_borders ADD COLUMN id BIGSERIAL PRIMARY KEY;
+
+
+Функция
+create or replace function adm2_linear_split() returns void as $$
+        begin
+					/* полигоны */
+					drop table if exists adm2_polygon;
+					drop table if exists adm2_outer_ring;
+					create table adm2_polygon as
+							select gid, id_1, name_1, id_2, nl_name_2, name_2, (st_dump(geom)).geom from rus_adm2;
+					alter table adm2_polygon add column p_id bigserial primary key;
+
+					create table adm2_outer_ring as
+							with max_ring as (
+									select tmp.p_id max_id, max(st_npoints(tmp.geom)) max_points from (
+											select t.gid, t.id_1, t.id_2, t.p_id, (st_dumprings(t.geom)).geom from adm2_polygon t) as tmp group by tmp.p_id
+							)
+							select * from (
+									 select t.gid, t.id_1, t.id_2, t.p_id, (st_dumprings(t.geom)).geom geom from adm2_polygon t) as tmp
+							inner join max_ring on tmp.p_id = max_ring.max_id and st_npoints(tmp.geom) = max_ring.max_points;
+				end;
+$$ language plpgsql;
+
+
+Анализ
